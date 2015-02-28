@@ -6,6 +6,8 @@ var minifyHTML = require('gulp-minify-html');
 var htmlreplace = require('gulp-html-replace');
 var serve = require('gulp-serve');
 var autoprefixer = require('gulp-autoprefixer');
+var $ = require('gulp-load-plugins')();
+var fs = require('fs');
 
 function getCssFilesArray () {
     return [
@@ -18,18 +20,14 @@ function getCssFilesArray () {
     ];
 }
 
-gulp.task('html-replace', ['compress:css'], function() {
-    gulp.src('*.html')
-        .pipe(htmlreplace({
-            'css': 'css/styles.min.css',
-            'js': 'js/bundle.min.js'
-        }))
-        .pipe(gulp.dest('dist/'));
-});
-
 gulp.task('copy:css-images', function () {
     return gulp.src('css/images/*')
         .pipe(gulp.dest('dist/css/images'));
+});
+
+gulp.task('copy:images', function () {
+    return gulp.src('images/**/*')
+        .pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('compress:css', function() {
@@ -38,22 +36,32 @@ gulp.task('compress:css', function() {
             browsers: ['last 2 versions'],
             cascade: false
         }))
+        .pipe($.replace('images/', 'css/images/'))
         .pipe(minify())
         .pipe(concat('styles.min.css'))
         .pipe(gulp.dest('dist/css'))
 });
 
 gulp.task('compress:js', function() {
-    return gulp.src(getJsFilesArray())
+    gulp.src('js/*.js')
         .pipe(uglify())
-        .pipe(concat('bundle.min.js'))
         .pipe(gulp.dest('dist/js'))
+});
+
+gulp.task('html:replace', [], function () {
+    return gulp.src('*.html')
+        .pipe($.replace(/\/\* replace:(.+) \*\//g, function (s, filename) {
+            var fileContent = fs.readFileSync(filename, 'utf8');
+            return fileContent;
+        }))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve', serve({
     root: ['dist'],
     port: 8000
 }));
+
 gulp.task('serve-prod', serve({
     root: ['dist'],
     port: 8000,
@@ -63,7 +71,9 @@ gulp.task('serve-prod', serve({
 }));
 
 gulp.task('default', [
-    'compress:css',
+    'copy:images',
     'copy:css-images',
-    'html-replace'
+    'compress:js',
+    'compress:css'
 ]);
+

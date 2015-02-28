@@ -2,6 +2,11 @@
 /* Basic                                                                         */
 /*********************************************************************************/
 @media screen and (max-width: 736px) {
+	#features .col-width-4,
+	#features .col-width-8 {
+		padding: 0;
+	}
+
 	body,input,textarea,select
 	{
 		font-size: 12.5pt;
