@@ -48,12 +48,15 @@ gulp.task('compress:js', function() {
         .pipe(gulp.dest('dist/js'))
 });
 
-gulp.task('html:replace', [], function () {
+function inserFile (s, filename) {
+    var fileContent = fs.readFileSync(filename, 'utf8');
+    return fileContent;
+}
+
+gulp.task('html:replace', function () {
     return gulp.src('*.html')
-        .pipe($.replace(/\/\* replace:(.+) \*\//g, function (s, filename) {
-            var fileContent = fs.readFileSync(filename, 'utf8');
-            return fileContent;
-        }))
+        .pipe($.replace(/\<\!\-\- include:(.+) \-\-\>/g, inserFile))
+        .pipe($.replace(/\/\* replace:(.+) \*\//g, inserFile))
         .pipe(gulp.dest('dist'));
 });
 
