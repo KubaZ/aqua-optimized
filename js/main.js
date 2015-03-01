@@ -1,3 +1,4 @@
+// homepage
 (function () {
     var header = document.querySelector('.homepage #header');
     var body = document.querySelector('body');
@@ -7,11 +8,6 @@
         setTimeout(function () {
             document.body.classList.add('init');
         }, 100);
-        if (Modernizr.touch) {
-            document.querySelector('.carousel').style.overflow = "auto";
-            document.querySelector('.carousel .forward').style.display = "none";
-            document.querySelector('.carousel .backward').style.display = "none";
-        }
         var isPortrait = window.matchMedia("(orientation: portrait)").matches;
         window.addEventListener('resize', function () {
             var newOrientation = window.matchMedia("(orientation: portrait)").matches;
@@ -33,9 +29,17 @@
             var val = Math.easeInOutQuad(currentTime, start, change, duration);
             element.scrollTop = val;
             if(currentTime < duration) {
+                if (window.requestAnimationFrame) {
+                    window.requestAnimationFrame(animateScroll);
+                    return;
+                }
                 setTimeout(animateScroll, increment);
             }
         };
+        if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(animateScroll);
+            return;
+        }
         animateScroll();
     }
 
@@ -56,6 +60,61 @@
         scrollButtons[i].addEventListener('click', handleScrollyButton, false);
     }
 })();
+// carousel
+(function () {
+    var carouselContainer = document.querySelector('.carousel');
+    if (!carouselContainer) {
+        return;
+    }
+    if (Modernizr.touch) {
+        carouselContainer.style.overflow = "auto";
+        carouselContainer.querySelector('.forward').style.display = "none";
+        carouselContainer.querySelector('.backward').style.display = "none";
+        return;
+    }
+    var reel = carouselContainer.querySelector('.reel'),
+        currentPosition = 0,
+        reelWidth,
+        windowWidth;
+
+    function moveBackward () {
+        currentPosition = currentPosition + windowWidth;
+        if (currentPosition > 0) {
+            currentPosition = 0;
+        }
+        reel.style.left = currentPosition + "px";
+    }
+
+    function moveForward () {
+        currentPosition = currentPosition - windowWidth;
+        if (currentPosition < -reelWidth + windowWidth) {
+            currentPosition = -reelWidth + windowWidth;
+        }
+        reel.style.left = currentPosition + "px";
+    }
+
+    function recalculateVariables () {
+        reelWidth = reel.scrollWidth + parseInt(carouselContainer.getAttribute('data-offset'));
+        windowWidth = window.innerWidth;
+    }
+
+    recalculateVariables();
+    moveBackward();
+    carouselContainer.addEventListener('moveForward', moveForward, false);
+    carouselContainer.addEventListener('moveBackward', moveBackward, false);
+    carouselContainer.querySelector('.forward').addEventListener('click', function (event) {
+        event.preventDefault();
+        var forwardEvent = new Event('moveForward');
+        carouselContainer.dispatchEvent(forwardEvent);
+    }, false);
+    carouselContainer.querySelector('.backward').addEventListener('click', function (event) {
+        event.preventDefault();
+        var backwardEvent = new Event('moveBackward');
+        carouselContainer.dispatchEvent(backwardEvent);
+    }, false);
+    window.addEventListener('resize', recalculateVariables, false);
+})();
+// lazy images
 (function () {
     var lazyImages = document.querySelectorAll('[data-lazy]');
     for (var i = 0; i < lazyImages.length; i++) {

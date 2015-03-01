@@ -157,9 +157,15 @@
 
 	#nav ul li {
 		display: block;
-		line-height: 18px;
-		padding: 0.5em 0;
-		margin: 0 0 5px;
+		line-height: 23px;
+		padding: .5em 0;
+		margin: 0;
+		border-top: 1px solid rgba(255,255,255,0.2);
+		border-radius: 0;
+	}
+
+	#nav ul li:first-child {
+		border-top: 1px solid transparent;
 	}
 
 	#navButton {

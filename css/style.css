@@ -754,7 +754,6 @@
 		overflow: hidden;
 		padding: 2em 0 2em 0;
 		margin-bottom: 0;
-		-webkit-overflow-scrolling: touch;
 	}
 
 		.carousel .forward,
@@ -790,10 +789,6 @@
 				position: absolute;
 				top: 50%;
 				margin-top: -3em;
-				-moz-transition: background-color 0.35s ease-in-out;
-				-webkit-transition: background-color 0.35s ease-in-out;
-				-o-transition: background-color 0.35s ease-in-out;
-				-ms-transition: background-color 0.35s ease-in-out;
 				transition: background-color 0.35s ease-in-out;
 				-webkit-backface-visibility: hidden;
 			}
@@ -846,7 +841,8 @@
 			white-space: nowrap;
 			position: relative;
 			-webkit-overflow-scrolling: touch;
-			padding: 0 2em 0 2em;
+			padding: 0 30px;
+			transition: left 0.3s ease-in-out;
 		}
 
 		.carousel article

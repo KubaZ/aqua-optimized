@@ -62,13 +62,9 @@ gulp.task('serve', serve({
     port: 8000
 }));
 
-gulp.task('serve-prod', serve({
-    root: ['dist'],
-    port: 8000,
-    middleware: function(req, res) {
-        // custom optional middleware
-    }
-}));
+gulp.task('watch', ['serve'], function () {
+    gulp.watch(['./*.html', 'js/*.*', 'css/*.*'], ['default']);
+});
 
 gulp.task('default', [
     'copy:images',
