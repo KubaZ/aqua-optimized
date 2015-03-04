@@ -51,7 +51,7 @@
     };
     function handleScrollyButton (event) {
         event.preventDefault();
-        var refElement = document.getElementById(event.target.getAttribute('href').replace('#', ''));
+        var refElement = document.getElementById(event.currentTarget.getAttribute('href').replace('#', ''));
         scrollTo(body, body.scrollTop + refElement.getBoundingClientRect().top, 600);
     }
 

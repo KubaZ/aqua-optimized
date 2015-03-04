@@ -29,6 +29,10 @@ gulp.task('copy:images', function () {
     return gulp.src('images/**/*')
         .pipe(gulp.dest('dist/images'));
 });
+gulp.task('copy:seo', function () {
+    return gulp.src(['robots.txt', 'sitemap.xml'])
+        .pipe(gulp.dest('dist'));
+});
 
 gulp.task('compress:css', function() {
     gulp.src(getCssFilesArray())
@@ -73,6 +77,7 @@ gulp.task('default', [
     'copy:images',
     'copy:css-images',
     'compress:js',
-    'compress:css'
+    'compress:css',
+    'copy:seo'
 ]);
 
