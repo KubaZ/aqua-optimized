@@ -1,7 +1,7 @@
 // homepage
 (function () {
+    'strict';
     var header = document.querySelector('.homepage #header');
-    var body = document.querySelector('body');
     if (header) {
         header.style.height = window.innerHeight + 'px';
         header.style.paddingTop = (window.innerHeight / 3) + 'px';
@@ -18,8 +18,12 @@
         }, false);
     }
 
-    function scrollTo(element, to, duration) {
-        var start = element.scrollTop,
+    function getCurrentScroll() {
+        return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    }
+
+    function scrollTo(to, duration) {
+        var start = getCurrentScroll(),
             change = to - start,
             currentTime = 0,
             increment = 20;
@@ -27,7 +31,7 @@
         var animateScroll = function(){
             currentTime += increment;
             var val = Math.easeInOutQuad(currentTime, start, change, duration);
-            element.scrollTop = val;
+            window.scrollTo(0, val);
             if(currentTime < duration) {
                 if (window.requestAnimationFrame) {
                     window.requestAnimationFrame(animateScroll);
@@ -52,7 +56,7 @@
     function handleScrollyButton (event) {
         event.preventDefault();
         var refElement = document.getElementById(event.currentTarget.getAttribute('href').replace('#', ''));
-        scrollTo(body, body.scrollTop + refElement.getBoundingClientRect().top, 600);
+        scrollTo(getCurrentScroll() + refElement.getBoundingClientRect().top, 600);
     }
 
     scrollButtons = document.querySelectorAll('a.scrolly');
