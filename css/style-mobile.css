@@ -132,16 +132,16 @@
 /* UI                                                                            */
 /*********************************************************************************/
 	.nav-open #nav {
-		transform: translate(0, 168px);
+		transform: translate(0, 208px);
 	}
 	.nav-open #navButton {
-		transform: translate(0, 167px);
+		transform: translate(0, 207px);
 	}
 	#nav {
 		display: block;
 		position: fixed;
-		height: 168px;
-		top: -168px;
+		height: 208px;
+		top: -208px;
 		z-index: 10;
 		background: rgba(0,0,0,0.85);
 		padding: 0;

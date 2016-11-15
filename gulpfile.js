@@ -29,6 +29,12 @@ gulp.task('copy:images', function () {
     return gulp.src('images/**/*')
         .pipe(gulp.dest('dist/images'));
 });
+
+gulp.task('copy:statics', function () {
+    return gulp.src('static/**/*')
+        .pipe(gulp.dest('dist/static'));
+});
+
 gulp.task('copy:seo', function () {
     return gulp.src(['robots.txt', 'sitemap.xml'])
         .pipe(gulp.dest('dist'));
@@ -78,6 +84,7 @@ gulp.task('default', [
     'copy:css-images',
     'compress:js',
     'compress:css',
-    'copy:seo'
+    'copy:seo',
+    'copy:statics'
 ]);
 
